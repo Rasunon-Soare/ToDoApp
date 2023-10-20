@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IJSRuntime _jsruntime
 
 <div class="container">
     <div class="todo-app">
@@ -7,15 +8,35 @@
             <i class="fa-solid fa-book-bookmark"></i>
         </div>
         <div class="rowtodo">
-            <input type="text" id="input-box" placeholder="add your tasks">
-            <button>Add</button>
+            <input type="text" id="input-box" placeholder="add your tasks" @bind-value=_toDo.Title>
+            @if (_toDo.Id == null)
+            {
+                <button type="button" @onclick=Save>Add</button>
+            }else{
+                <button type="button" @onclick=Update>Update</button>
+            }
         </div>
         <ul id="list-container">
-           <li>Test</li>
-            <li>Test</li>
-             <li>Test</li>
-              <li>Test</li>
-
+            @if (lst != null)
+            {
+                foreach (var item in lst)
+                {
+                    <li class="text-black">
+                        @item.Title
+                        <span>
+                            <button class="btn btn-sm btn-primary" type="button"
+                            @onclick="() => Edit(item.Id)">
+                                <i class="fa-solid fa-pen-nib"></i>
+                            </button>
+                            &nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-sm btn-danger" type="button"
+                            @onclick="() => Delete(item.Id)">
+                                <i class="fa-solid fa-square-minus"></i>
+                            </button>
+                        </span>
+                    </li>
+                }
+            }
         </ul>
     </div>
 </div>
